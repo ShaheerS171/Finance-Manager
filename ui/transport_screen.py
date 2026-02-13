@@ -121,6 +121,12 @@ class TransportScreen(ft.Container):
                     ),
                     ft.VerticalDivider(width=10),
                     ft.ElevatedButton(
+                        "Export to Excel",
+                        icon=ft.Icons.FILE_DOWNLOAD,
+                        on_click=lambda e: self.export_bus_details(),
+                        style=ft.ButtonStyle(bgcolor="#4CAF50", color="white")
+                    ),
+                    ft.ElevatedButton(
                         "Add Student",
                         icon=ft.Icons.PERSON_ADD,
                         on_click=self.show_add_student_dialog,
@@ -497,6 +503,22 @@ class TransportScreen(ft.Container):
             ]
         )
         self.open_dialog(dlg)
+
+    def export_bus_details(self):
+        """Export current bus details and students to Excel"""
+        from utils.export import export_students_to_excel
+        if not self.current_bus: return
+        
+        try:
+            students = self.db.get_students_by_bus(self.current_bus.id)
+            filename = export_students_to_excel(students)
+            self.main_page.snack_bar = ft.SnackBar(content=ft.Text(f"Exported to {filename}"), bgcolor="#4CAF50")
+            self.main_page.snack_bar.open = True
+            self.main_page.update()
+        except Exception as e:
+            self.main_page.snack_bar = ft.SnackBar(content=ft.Text(f"Export failed: {str(e)}"), bgcolor="#F44336")
+            self.main_page.snack_bar.open = True
+            self.main_page.update()
 
 
     def open_dialog(self, dlg):

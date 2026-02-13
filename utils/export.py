@@ -230,3 +230,48 @@ def export_defaulters_to_excel(students, filename=None):
     # Save
     wb.save(filename)
     return filename
+
+
+def export_teacher_debt_to_excel(debts, filename=None):
+    """Export teacher debt records to Excel"""
+    if filename is None:
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        filename = f"teacher_debt_{timestamp}.xlsx"
+    
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Teacher Debt"
+    
+    # Header styling
+    header_fill = PatternFill(start_color="F44336", end_color="F44336", fill_type="solid")
+    header_font = Font(bold=True, color="FFFFFF")
+    header_alignment = Alignment(horizontal="center", vertical="center")
+    
+    # Headers
+    headers = ["ID", "Teacher Name", "Amount", "Date", "Notes"]
+    ws.append(headers)
+    
+    # Style header row
+    for cell in ws[1]:
+        cell.fill = header_fill
+        cell.font = header_font
+        cell.alignment = header_alignment
+    
+    # Add data
+    for debt in debts:
+        ws.append([
+            debt.id,
+            debt.teacher_name,
+            debt.amount,
+            debt.debt_date,
+            debt.notes or ""
+        ])
+    
+    # Adjust column widths
+    column_widths = [8, 25, 15, 15, 40]
+    for i, width in enumerate(column_widths, 1):
+        ws.column_dimensions[chr(64 + i)].width = width
+    
+    # Save
+    wb.save(filename)
+    return filename

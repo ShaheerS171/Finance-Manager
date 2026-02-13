@@ -89,7 +89,14 @@ class EventsScreen(ft.Container):
                 [
                     ft.IconButton(icon=ft.Icons.ARROW_BACK, on_click=lambda e: self.navigate_back()),
                     ft.Text(f"Event: {self.current_event.name}", size=24, weight=ft.FontWeight.BOLD),
-                    ft.Container(expand=True),
+                    ft.Container(expand=True                    ),
+                    ft.VerticalDivider(width=10),
+                    ft.ElevatedButton(
+                        "Export to Excel",
+                        icon=ft.Icons.FILE_DOWNLOAD,
+                        on_click=lambda e: self.export_event_details(),
+                        style=ft.ButtonStyle(bgcolor="#4CAF50", color="white")
+                    ),
                     ft.ElevatedButton(
                         "Add Participant",
                         icon=ft.Icons.PERSON_ADD,
@@ -363,6 +370,22 @@ class EventsScreen(ft.Container):
             ]
         )
         self.open_dialog(dlg)
+
+    def export_event_details(self):
+        """Export current event details and participants to Excel"""
+        from utils.export import export_event_to_excel
+        if not self.current_event: return
+        
+        try:
+            participants = self.db.get_event_participants(self.current_event.id)
+            filename = export_event_to_excel(self.current_event, participants)
+            self.main_page.snack_bar = ft.SnackBar(content=ft.Text(f"Exported to {filename}"), bgcolor="#4CAF50")
+            self.main_page.snack_bar.open = True
+            self.main_page.update()
+        except Exception as e:
+            self.main_page.snack_bar = ft.SnackBar(content=ft.Text(f"Export failed: {str(e)}"), bgcolor="#F44336")
+            self.main_page.snack_bar.open = True
+            self.main_page.update()
 
     def open_dialog(self, dlg):
         """Open a dialog using overlay"""

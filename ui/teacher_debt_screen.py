@@ -66,6 +66,13 @@ class TeacherDebtScreen(ft.Container):
                     icon=ft.Icons.ADD,
                     on_click=self.show_add_debt_dialog,
                     style=ft.ButtonStyle(bgcolor="#F44336", color="white")
+                ),
+                ft.VerticalDivider(width=10),
+                ft.ElevatedButton(
+                    "Export to Excel",
+                    icon=ft.Icons.FILE_DOWNLOAD,
+                    on_click=lambda e: self.export_debt_list(),
+                    style=ft.ButtonStyle(bgcolor="#4CAF50", color="white")
                 )
             ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN),
             

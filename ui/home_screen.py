@@ -121,6 +121,16 @@ class HomeScreen(ft.Container):
                                 ),
                             ),
                             ft.ElevatedButton(
+                                "Export All Payments",
+                                icon=ft.Icons.MONETIZATION_ON,
+                                on_click=lambda e: self.export_all_payments(),
+                                style=ft.ButtonStyle(
+                                    bgcolor="#FF9800",
+                                    color="white",
+                                    padding=20,
+                                ),
+                            ),
+                            ft.ElevatedButton(
                                 "Backup Database",
                                 icon=ft.Icons.BACKUP,
                                 on_click=lambda e: self.backup_database(),
@@ -273,6 +283,21 @@ class HomeScreen(ft.Container):
             self.page.snack_bar = ft.SnackBar(content=ft.Text(f"Backup failed: {str(e)}"), bgcolor="#F44336")
             self.page.snack_bar.open = True
             self.page.update()
+            
+    def export_all_payments(self):
+        """Export all payment history to Excel"""
+        from utils.export import export_payments_to_excel
+        
+        try:
+            payments = self.db.get_all_payments()
+            filename = export_payments_to_excel(payments)
+            self.page.snack_bar = ft.SnackBar(content=ft.Text(f"Exported to {filename}"), bgcolor="#4CAF50")
+            self.page.snack_bar.open = True
+            self.page.update()
+        except Exception as e:
+            self.page.snack_bar = ft.SnackBar(content=ft.Text(f"Export failed: {str(e)}"), bgcolor="#F44336")
+            self.page.snack_bar.open = True
+            self.page.update()
     
     def open_dialog(self, dlg):
         """Open a dialog using overlay"""
@@ -380,6 +405,16 @@ class HomeScreen(ft.Container):
                                 on_click=lambda e: self.export_transport_data(),
                                 style=ft.ButtonStyle(
                                     bgcolor="#2196F3",
+                                    color="white",
+                                    padding=20,
+                                ),
+                            ),
+                            ft.ElevatedButton(
+                                "Export All Payments",
+                                icon=ft.Icons.MONETIZATION_ON,
+                                on_click=lambda e: self.export_all_payments(),
+                                style=ft.ButtonStyle(
+                                    bgcolor="#FF9800",
                                     color="white",
                                     padding=20,
                                 ),
