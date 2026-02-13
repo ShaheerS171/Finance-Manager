@@ -23,12 +23,15 @@ A complete, fully functional desktop application for managing transport fees and
 - ✅ Partial payment tracking
 - ✅ Summary dashboard with statistics
 - ✅ Export to Excel (students, payments, events, defaulters)
+- ✅ Bulk Student Import (from CSV/Excel)
+- ✅ Global Monthly Rollover
 - ✅ Database backup and restore
 - ✅ Receipt number generation
 - ✅ Event deadlines
 
 ### User Interface
 - ✅ Clean, modern GUI using Flet
+- ✅ Dark Mode / Light Mode toggle
 - ✅ Navigation sidebar
 - ✅ Dashboard with statistics cards
 - ✅ Interactive cards for students/events
@@ -92,17 +95,17 @@ flet build apk
 4. **Full CRUD**: Create, Read, Update, Delete for all entities
 5. **Excel Export**: Generate reports for printing/sharing
 6. **Backup System**: Built-in database backup
-7. **Search & Filter**: Find students quickly
-8. **Payment Tracking**: Complete payment history
-9. **Multi-Event Support**: Handle multiple events simultaneously
+7. **Bulk Data Entry**: Import students from Excel/CSV in seconds
+8. **Automation**: One-click Global Monthly Rollover
+9. **Dark Mode**: Eye-friendly interface option
 10. **Receipt Numbers**: Auto-generated for tracking
 
 ## 📊 Statistics
 
-- **Total Files**: 15 files
-- **Python Code**: 12 files
-- **Lines of Code**: ~2500+ lines
-- **Features**: 25+ implemented
+- **Total Files**: 19 files
+- **Python Code**: 16 files
+- **Lines of Code**: ~2800+ lines
+- **Features**: 30+ implemented
 - **Development Time**: ~1.5 hours
 
 ## 🎯 Perfect For
@@ -129,6 +132,7 @@ The app can be packaged for mobile:
 ## 🎨 UI Features
 
 - Color-coded payment status (Paid/Partial/Pending)
+- Dark Mode support with manual toggle
 - Interactive cards with actions
 - Progress bars for events
 - Statistics dashboard

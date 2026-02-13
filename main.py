@@ -34,6 +34,13 @@ class TransportFeeManager:
     
     def build_ui(self):
         """Build the main user interface"""
+        # Theme Toggle
+        self.theme_toggle = ft.IconButton(
+            icon=ft.Icons.DARK_MODE_OUTLINED,
+            on_click=self.toggle_theme,
+            tooltip="Toggle Light/Dark Mode"
+        )
+
         # Navigation rail
         self.nav_rail = ft.NavigationRail(
             selected_index=0,
@@ -63,12 +70,13 @@ class TransportFeeManager:
                     label="Principal",
                 ),
                 ft.NavigationRailDestination(
-                    icon=ft.Icons.HANDSHAKE_OUTLINED,
-                    selected_icon=ft.Icons.HANDSHAKE,
+                    icon=ft.Icons.PEOPLE_OUTLINED,
+                    selected_icon=ft.Icons.PEOPLE,
                     label="Teachers",
                 ),
             ],
             on_change=self.navigate,
+            trailing=ft.Container(self.theme_toggle, padding=ft.padding.only(bottom=20))
         )
         
         # Content area
@@ -130,6 +138,17 @@ class TransportFeeManager:
         """Refresh the current screen"""
         if hasattr(self.current_screen, 'refresh'):
             self.current_screen.refresh()
+
+    def toggle_theme(self, e):
+        """Toggle between light and dark theme"""
+        if self.page.theme_mode == ft.ThemeMode.LIGHT:
+            self.page.theme_mode = ft.ThemeMode.DARK
+            self.theme_toggle.icon = ft.Icons.LIGHT_MODE
+        else:
+            self.page.theme_mode = ft.ThemeMode.LIGHT
+            self.theme_toggle.icon = ft.Icons.DARK_MODE_OUTLINED
+        
+        self.page.update()
 
 
 def main(page: ft.Page):

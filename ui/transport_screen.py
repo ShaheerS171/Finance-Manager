@@ -95,7 +95,23 @@ class TransportScreen(ft.Container):
             ft.Container(
                 content=self.bus_grid,
                 expand=True
-            )
+            ),
+            # Bottom Actions
+            ft.Divider(),
+            ft.Row([
+                ft.ElevatedButton(
+                    "Bulk Import Students",
+                    icon=ft.Icons.FILE_UPLOAD,
+                    on_click=self.show_import_dialog,
+                    style=ft.ButtonStyle(bgcolor="#673AB7", color="white")
+                ),
+                ft.ElevatedButton(
+                    "Global Monthly Rollover",
+                    icon=ft.Icons.SYNC,
+                    on_click=self.confirm_global_rollover,
+                    style=ft.ButtonStyle(bgcolor="#E91E63", color="white")
+                ),
+            ], alignment=ft.MainAxisAlignment.START)
         ]
         
     def show_bus_detail_view(self):
@@ -520,6 +536,50 @@ class TransportScreen(ft.Container):
             self.main_page.snack_bar.open = True
             self.main_page.update()
 
+
+    def show_import_dialog(self, e):
+        """Show file picker for bulk import"""
+        file_picker = ft.FilePicker(on_result=self.on_file_result)
+        self.main_page.overlay.append(file_picker)
+        self.main_page.update()
+        file_picker.pick_files(allow_multiple=False, allowed_extensions=["csv", "xlsx"])
+
+    def on_file_result(self, e):
+        if not e.files: return
+        
+        file_path = e.files[0].path
+        from utils.importer import import_students_from_file
+        
+        try:
+            count = import_students_from_file(file_path, self.db)
+            self.load_buses() # Refresh grid
+            self.main_page.snack_bar = ft.SnackBar(content=ft.Text(f"Successfully imported {count} students!"), bgcolor="#4CAF50")
+            self.main_page.snack_bar.open = True
+            self.main_page.update()
+        except Exception as ex:
+            self.main_page.snack_bar = ft.SnackBar(content=ft.Text(f"Import failed: {str(ex)}"), bgcolor="#F44336")
+            self.main_page.snack_bar.open = True
+            self.main_page.update()
+
+    def confirm_global_rollover(self, e):
+        """Show confirmation for GLOBAL monthly rollover"""
+        def roll(e):
+            self.db.reset_all_payments()
+            self.close_dialog(dlg)
+            self.load_buses()
+            self.main_page.snack_bar = ft.SnackBar(content=ft.Text("Global monthly rollover complete! All payments reset."), bgcolor="#4CAF50")
+            self.main_page.snack_bar.open = True
+            self.main_page.update()
+
+        dlg = ft.AlertDialog(
+            title=ft.Text("Global Monthly Rollover?"),
+            content=ft.Text("CRITICAL: This will reset payments for ALL students in ALL buses to zero. This is usually done at the start of a new month. Proceed?"),
+            actions=[
+                ft.TextButton("Cancel", on_click=lambda e: self.close_dialog(dlg)),
+                ft.ElevatedButton("Reset All Payments", on_click=roll, bgcolor="#E91E63", color="white")
+            ]
+        )
+        self.open_dialog(dlg)
 
     def open_dialog(self, dlg):
         """Open a dialog using overlay"""

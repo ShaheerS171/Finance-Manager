@@ -433,6 +433,15 @@ class DatabaseManager:
         conn.commit()
         conn.close()
         return True
+
+    def reset_all_payments(self):
+        """Reset paid_amount to 0 for ALL students in the database"""
+        conn = self._get_connection()
+        cursor = conn.cursor()
+        cursor.execute('UPDATE students SET paid_amount = 0')
+        conn.commit()
+        conn.close()
+        return True
     
     # ===== PAYMENT OPERATIONS =====
     
