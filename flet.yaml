@@ -1,0 +1,18 @@
+app:
+  name: "Transport Manager"
+  id: "com.shaheer.transportfeemanager"
+  version: "1.0.0"
+  build_number: 1
+  
+android:
+  package_name: "com.shaheer.transportfeemanager"
+  permissions:
+    - READ_EXTERNAL_STORAGE
+    - WRITE_EXTERNAL_STORAGE
+    - MANAGE_EXTERNAL_STORAGE
+  icon: "assets/icon.png"
+  
+display_name: "Transport Manager"
+version: "1.0.0"
+build_number: 1
+package_name: "com.shaheer.transportfeemanager"

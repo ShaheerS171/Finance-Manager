@@ -537,22 +537,24 @@ class TransportScreen(ft.Container):
             self.main_page.update()
 
 
-    def show_import_dialog(self, e):
+    async def show_import_dialog(self, e):
         """Show file picker for bulk import"""
-        file_picker = ft.FilePicker(on_result=self.on_file_result)
-        self.main_page.overlay.append(file_picker)
-        self.main_page.update()
-        file_picker.pick_files(allow_multiple=False, allowed_extensions=["csv", "xlsx"])
-
-    def on_file_result(self, e):
-        if not e.files: return
+        file_picker = ft.FilePicker()
         
-        file_path = e.files[0].path
+        files = await file_picker.pick_files(
+            allow_multiple=False,
+            allowed_extensions=["csv", "xlsx"]
+        )
+        
+        if not files:
+            return
+        
+        file_path = files[0].path
         from utils.importer import import_students_from_file
         
         try:
             count = import_students_from_file(file_path, self.db)
-            self.load_buses() # Refresh grid
+            self.load_buses()  # Refresh grid
             self.main_page.snack_bar = ft.SnackBar(content=ft.Text(f"Successfully imported {count} students!"), bgcolor="#4CAF50")
             self.main_page.snack_bar.open = True
             self.main_page.update()

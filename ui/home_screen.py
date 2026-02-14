@@ -193,9 +193,9 @@ class HomeScreen(ft.Container):
         defaulters = self.db.get_defaulters()
         
         if not defaulters:
-            self.page.snack_bar = ft.SnackBar(content=ft.Text("No pending payments!"), bgcolor="#4CAF50")
-            self.page.snack_bar.open = True
-            self.page.update()
+            self.main_page.snack_bar = ft.SnackBar(content=ft.Text("No pending payments!"), bgcolor="#4CAF50")
+            self.main_page.snack_bar.open = True
+            self.main_page.update()
             return
         
         # Create dialog with defaulters list
@@ -234,14 +234,14 @@ class HomeScreen(ft.Container):
         
         try:
             filename = export_defaulters_to_excel(defaulters)
-            self.page.snack_bar = ft.SnackBar(content=ft.Text(f"Exported to {filename}"), bgcolor="#4CAF50")
-            self.page.snack_bar.open = True
-            self.page.update()
+            self.main_page.snack_bar = ft.SnackBar(content=ft.Text(f"Exported to {filename}"), bgcolor="#4CAF50")
+            self.main_page.snack_bar.open = True
+            self.main_page.update()
             self.close_dialog(dialog)
         except Exception as e:
-            self.page.snack_bar = ft.SnackBar(content=ft.Text(f"Export failed: {str(e)}"), bgcolor="#F44336")
-            self.page.snack_bar.open = True
-            self.page.update()
+            self.main_page.snack_bar = ft.SnackBar(content=ft.Text(f"Export failed: {str(e)}"), bgcolor="#F44336")
+            self.main_page.snack_bar.open = True
+            self.main_page.update()
     
     def export_transport_data(self):
         """Export all transport data to Excel"""
@@ -254,16 +254,16 @@ class HomeScreen(ft.Container):
             students_file = export_students_to_excel(students)
             payments_file = export_payments_to_excel(payments)
             
-            self.page.snack_bar = ft.SnackBar(
+            self.main_page.snack_bar = ft.SnackBar(
                 content=ft.Text(f"Exported to {students_file} and {payments_file}"),
                 bgcolor="#4CAF50"
             )
-            self.page.snack_bar.open = True
-            self.page.update()
+            self.main_page.snack_bar.open = True
+            self.main_page.update()
         except Exception as e:
-            self.page.snack_bar = ft.SnackBar(content=ft.Text(f"Export failed: {str(e)}"), bgcolor="#F44336")
-            self.page.snack_bar.open = True
-            self.page.update()
+            self.main_page.snack_bar = ft.SnackBar(content=ft.Text(f"Export failed: {str(e)}"), bgcolor="#F44336")
+            self.main_page.snack_bar.open = True
+            self.main_page.update()
     
     def backup_database(self):
         """Backup the database"""
@@ -274,15 +274,15 @@ class HomeScreen(ft.Container):
             backup_path = f"data/backup_{timestamp}.db"
             
             if self.db.backup_database(backup_path):
-                self.page.snack_bar = ft.SnackBar(content=ft.Text(f"Backup saved to {backup_path}"), bgcolor="#4CAF50")
-                self.page.snack_bar.open = True
-                self.page.update()
+                self.main_page.snack_bar = ft.SnackBar(content=ft.Text(f"Backup saved to {backup_path}"), bgcolor="#4CAF50")
+                self.main_page.snack_bar.open = True
+                self.main_page.update()
             else:
                 raise Exception("Backup failed")
         except Exception as e:
-            self.page.snack_bar = ft.SnackBar(content=ft.Text(f"Backup failed: {str(e)}"), bgcolor="#F44336")
-            self.page.snack_bar.open = True
-            self.page.update()
+            self.main_page.snack_bar = ft.SnackBar(content=ft.Text(f"Backup failed: {str(e)}"), bgcolor="#F44336")
+            self.main_page.snack_bar.open = True
+            self.main_page.update()
             
     def export_all_payments(self):
         """Export all payment history to Excel"""
@@ -291,25 +291,25 @@ class HomeScreen(ft.Container):
         try:
             payments = self.db.get_all_payments()
             filename = export_payments_to_excel(payments)
-            self.page.snack_bar = ft.SnackBar(content=ft.Text(f"Exported to {filename}"), bgcolor="#4CAF50")
-            self.page.snack_bar.open = True
-            self.page.update()
+            self.main_page.snack_bar = ft.SnackBar(content=ft.Text(f"Exported to {filename}"), bgcolor="#4CAF50")
+            self.main_page.snack_bar.open = True
+            self.main_page.update()
         except Exception as e:
-            self.page.snack_bar = ft.SnackBar(content=ft.Text(f"Export failed: {str(e)}"), bgcolor="#F44336")
-            self.page.snack_bar.open = True
-            self.page.update()
+            self.main_page.snack_bar = ft.SnackBar(content=ft.Text(f"Export failed: {str(e)}"), bgcolor="#F44336")
+            self.main_page.snack_bar.open = True
+            self.main_page.update()
     
     def open_dialog(self, dlg):
         """Open a dialog using overlay"""
-        if dlg not in self.page.overlay:
-            self.page.overlay.append(dlg)
+        if dlg not in self.main_page.overlay:
+            self.main_page.overlay.append(dlg)
         dlg.open = True
-        self.page.update()
+        self.main_page.update()
 
     def close_dialog(self, dialog):
         """Close dialog"""
         dialog.open = False
-        self.page.update()
+        self.main_page.update()
     
     def refresh(self):
         """Refresh the dashboard"""

@@ -214,6 +214,22 @@ class TeacherDebtScreen(ft.Container):
         )
         self.open_dialog(dlg)
 
+    # --- EXPORT ---
+
+    def export_debt_list(self):
+        """Export all teacher debt records to Excel"""
+        from utils.export import export_teacher_debt_to_excel
+        
+        try:
+            debts = self.db.get_all_teacher_debt()
+            if not debts:
+                self.show_snackbar("No debt records to export", "#FF9800")
+                return
+            filename = export_teacher_debt_to_excel(debts)
+            self.show_snackbar(f"Exported to {filename}", "#4CAF50")
+        except Exception as e:
+            self.show_snackbar(f"Export failed: {str(e)}", "#F44336")
+
     # --- HELPERS ---
 
     def open_dialog(self, dlg):
